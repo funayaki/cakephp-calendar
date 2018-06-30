@@ -1,5 +1,5 @@
 {
-	"name": "dereuromark/cakephp-calendar",
+	"name": "funayaki/cakephp-calendar",
 	"type": "cakephp-plugin",
 	"description": "A CakePHP plugin to easily create calendars.",
 	"keywords": [
