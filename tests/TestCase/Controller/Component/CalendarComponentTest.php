@@ -8,59 +8,65 @@ use TestApp\Controller\CalendarComponentTestController;
 
 /**
  */
-class CalendarComponentTest extends TestCase {
+class CalendarComponentTest extends TestCase
+{
 
-	/**
-	 * @var \TestApp\Controller\CalendarComponentTestController
-	 */
-	public $Controller;
+    /**
+     * @var \TestApp\Controller\CalendarComponentTestController
+     */
+    public $Controller;
 
-	/**
-	 * @return void
-	 */
-	public function setUp() {
-		parent::setUp();
+    /**
+     * @return void
+     */
+    public function setUp()
+    {
+        parent::setUp();
 
-		$this->Controller = new CalendarComponentTestController(new Request());
-		$this->Controller->startupProcess();
-	}
+        $this->Controller = new CalendarComponentTestController(new Request());
+        $this->Controller->startupProcess();
+    }
 
-	/**
-	 * @return void
-	 */
-	public function tearDown() {
-		parent::tearDown();
+    /**
+     * @return void
+     */
+    public function tearDown()
+    {
+        parent::tearDown();
 
-		unset($this->Controller->Calendar);
-		unset($this->Controller);
-	}
+        unset($this->Controller->Calendar);
+        unset($this->Controller);
+    }
 
-	/**
-	 * @return void
-	 */
-	public function testInit() {
-		$this->Controller->Calendar->init('2016', '02');
+    /**
+     * @return void
+     */
+    public function testInit()
+    {
+        $this->Controller->Calendar->init('2016', '02');
 
-		$this->assertSame(2016, $this->Controller->Calendar->year());
-		$this->assertSame(2, $this->Controller->Calendar->month());
-	}
+        $this->assertSame(2016, $this->Controller->Calendar->year());
+        $this->assertSame(2, $this->Controller->Calendar->month());
+    }
 
-	/**
-	 * @return void
-	 */
-	public function testInitFromString() {
-		$this->Controller->Calendar->init('2016', 'february');
+    /**
+     * @return void
+     */
+    public function testInitFromString()
+    {
+        $this->Controller->Calendar->init('2016', 'february');
 
-		$this->assertSame(2016, $this->Controller->Calendar->year());
-		$this->assertSame(2, $this->Controller->Calendar->month());
-	}
+        $this->assertSame(2016, $this->Controller->Calendar->year());
+        $this->assertSame(2, $this->Controller->Calendar->month());
+    }
 
-	/**
-	 * @expectedException \Cake\Network\Exception\NotFoundException
-	 * @return void
-	 */
-	public function testInitInvalid() {
-		$this->Controller->Calendar->init('2016', '');
-	}
+    /**
+     * @expectedException \Cake\Network\Exception\NotFoundException
+     * @return void
+     */
+    public function testInitInvalid()
+    {
+        $this->Controller->Calendar->init('2016', '');
+    }
 
 }

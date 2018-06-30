@@ -8,11 +8,12 @@ use Cake\Controller\Controller;
  *
  * @property \Calendar\Controller\Component\CalendarComponent $Calendar
  */
-class CalendarComponentTestController extends Controller {
+class CalendarComponentTestController extends Controller
+{
 
-	/**
-	 * @var array
-	 */
-	public $components = ['Calendar.Calendar'];
+    /**
+     * @var array
+     */
+    public $components = ['Calendar.Calendar'];
 
 }

@@ -15,92 +15,95 @@ use Cake\ORM\Table;
  * @author Mark Scherer
  * @license MIT
  */
-class CalendarBehavior extends Behavior {
+class CalendarBehavior extends Behavior
+{
 
-	const YEAR = 'year';
-	const MONTH = 'month';
+    const YEAR = 'year';
+    const MONTH = 'month';
 
-	/**
-	 * @var \Cake\ORM\Table
-	 */
-	protected $_table;
+    /**
+     * @var \Cake\ORM\Table
+     */
+    protected $_table;
 
-	/**
-	 * @var array
-	 */
-	protected $_defaultConfig = [
-		'field' => 'date',
-		'endField' => null,
-		'implementedFinders' => [
-			'calendar' => 'findCalendar',
-		],
-		'scope' => [],
-	];
+    /**
+     * @var array
+     */
+    protected $_defaultConfig = [
+        'field' => 'date',
+        'endField' => null,
+        'implementedFinders' => [
+            'calendar' => 'findCalendar',
+        ],
+        'scope' => [],
+    ];
 
-	/**
-	 * Constructor
-	 *
-	 * Merges config with the default and store in the config property
-	 *
-	 * Does not retain a reference to the Table object. If you need this
-	 * you should override the constructor.
-	 *
-	 * @param \Cake\ORM\Table $table The table this behavior is attached to.
-	 * @param array $config The config for this behavior.
-	 */
-	public function __construct(Table $table, array $config = []) {
-		$defaults = (array)Configure::read('Calendar');
-		parent::__construct($table, $config + $defaults);
+    /**
+     * Constructor
+     *
+     * Merges config with the default and store in the config property
+     *
+     * Does not retain a reference to the Table object. If you need this
+     * you should override the constructor.
+     *
+     * @param \Cake\ORM\Table $table The table this behavior is attached to.
+     * @param array $config The config for this behavior.
+     */
+    public function __construct(Table $table, array $config = [])
+    {
+        $defaults = (array)Configure::read('Calendar');
+        parent::__construct($table, $config + $defaults);
 
-		$this->_table = $table;
-	}
+        $this->_table = $table;
+    }
 
-	/**
-	 * Custom finder for Calendars field.
-	 *
-	 * Options:
-	 * - year (required), best to use CalendarBehavior::YEAR constant
-	 * - month (required), best to use CalendarBehavior::MONTH constant
-	 *
-	 * @param \Cake\ORM\Query $query Query.
-	 * @param array $options Array of options as described above
-	 * @return \Cake\ORM\Query
-	 */
-	public function findCalendar(Query $query, array $options) {
-		$field = $this->config('field');
+    /**
+     * Custom finder for Calendars field.
+     *
+     * Options:
+     * - year (required), best to use CalendarBehavior::YEAR constant
+     * - month (required), best to use CalendarBehavior::MONTH constant
+     *
+     * @param \Cake\ORM\Query $query Query.
+     * @param array $options Array of options as described above
+     * @return \Cake\ORM\Query
+     */
+    public function findCalendar(Query $query, array $options)
+    {
+        $field = $this->config('field');
 
-		$year = $options[static::YEAR];
-		$month = $options[static::MONTH];
+        $year = $options[static::YEAR];
+        $month = $options[static::MONTH];
 
-		$from = new Time($year . '-' . $month . '-01');
-		$lastDayOfMonth = $from->daysInMonth;
+        $from = new Time($year . '-' . $month . '-01');
+        $lastDayOfMonth = $from->daysInMonth;
 
-		$to = new Time($year . '-' . $month . '-' . $lastDayOfMonth . ' 23:59:59');
+        $to = new Time($year . '-' . $month . '-' . $lastDayOfMonth . ' 23:59:59');
 
-		$conditions = [
-			$field . ' >=' => $from,
-			$field . ' <=' => $to
-		];
-		if ($this->config('endField')) {
-			$endField = $this->config('endField');
+        $conditions = [
+            $field . ' >=' => $from,
+            $field . ' <=' => $to
+        ];
+        if ($this->config('endField')) {
+            $endField = $this->config('endField');
 
-			$conditions = [
-				'OR' => [
-					[
-						$field . ' <=' => $to,
-						$endField . ' >' => $from,
-					],
-					$conditions
-				]
-			];
-		}
+            $conditions = [
+                'OR' => [
+                    [
+                        $field . ' <=' => $to,
+                        $endField . ' >' => $from,
+                    ],
+                    $conditions
+                ]
+            ];
+        }
 
-		$query->where($conditions);
-		if ($this->config('scope')) {
-			$query->andWhere($this->config('scope'));
-		}
+        $query->where($conditions);
+        if ($this->config('scope')) {
+            $query->andWhere($this->config('scope'));
+        }
 
-		return $query;
-	}
+        return $query;
+    }
 
 }
