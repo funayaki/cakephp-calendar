@@ -146,7 +146,7 @@ class CalendarHelper extends Helper
         $firstDayInMonth = date('D', mktime(0, 0, 0, $month, 1, $year));
         $firstDayInMonth = strtolower($firstDayInMonth);
 
-        $str .= '<table class="calendar">';
+        $str .= '<table class="calendar table table-bordered">';
 
         $str .= '<thead>';
 
